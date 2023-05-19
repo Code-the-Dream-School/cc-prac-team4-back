@@ -10,7 +10,6 @@ require("dotenv").config();
 const mainRouter = require("./routes/mainRouter.js");
 const userRouter = require("./routes/userRouter.js");
 
-const notFoundMiddleware = require("../middleware/not-found.js");
 const errorHandlerMiddleware = require("../middleware/error-handler.js");
 
 // middleware
@@ -21,7 +20,7 @@ app.use(logger("dev"));
 app.use(express.static("public"));
 app.use(favicon(__dirname + "/public/favicon.ico"));
 
-app.use(notFoundMiddleware);
+
 app.use(errorHandlerMiddleware);
 
 // routes
