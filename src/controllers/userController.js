@@ -5,60 +5,6 @@ const {
   UnauthenticatedError,
   NotFoundError,
 } = require("../../errors");
-const {
-  forgotPassword,
-  resetPassword,
-} = require("../../middleware/forgotpassword");
-const sendToken = require("../../middleware/jwtToken");
-
-const registerUser = async (req, res) => {
-  const user = await User.create({ ...req.body });
-  const token = user.createJWT();
-  res
-    .status(StatusCodes.CREATED)
-    .json({ user: { name: user.name }, token, userId: user._id });
-};
-
-const loginUser = async (req, res) => {
-  const { email, password } = req.body;
-
-  if (!email || !password) {
-    throw new BadRequestError("Please provide Email and Password");
-  }
-
-  const user = await User.findOne({ email });
-  if (!user) {
-    throw new UnauthenticatedError("Invalid Email");
-  }
-
-  const isPasswordCorrect = await user.comparePassword(password);
-  if (!isPasswordCorrect) {
-    throw new UnauthenticatedError("Invalid Password");
-  }
-  const token = user.createJWT();
-  res
-    .status(StatusCodes.OK)
-    .json({ user: { name: user.name }, token, userId: user._id });
-};
-
-const logout = async (req, res) => {
-  res.cookie("token", null, { expires: new Date(Date.now()), httpOnly: true });
-  res.status(StatusCodes.OK).json({ success: true, message: "Logged Out" });
-};
-
-const forgotPasswordController = async (req, res, next) => {
-  const forgotPaswordService = await forgotPassword(req.body.email);
-  return res.json(forgotPaswordService);
-};
-
-const resetPasswordController = async (req, res, next) => {
-  const resetPasswordService = await resetPassword(
-    req.body.userId,
-    req.body.token,
-    req.body.password
-  );
-  return res.json(resetPasswordService);
-};
 
 const getUserDetails = async (req, res, next) => {
   const user = await User.findById(req.params.id);
@@ -155,11 +101,6 @@ const deleteUser = async (req, res, next) => {
 };
 
 module.exports = {
-  registerUser,
-  loginUser,
-  logout,
-  forgotPasswordController,
-  resetPasswordController,
   getUserDetails,
   updatePassword,
   updateProfile,
