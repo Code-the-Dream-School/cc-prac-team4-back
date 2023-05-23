@@ -10,8 +10,6 @@ const {
   resetPassword,
 } = require("../../middleware/forgotpassword");
 
-//add
-
 const forgotPasswordController = async (req, res, next) => {
   const forgotPaswordService = await forgotPassword(req.body.email);
   return res.json(forgotPaswordService);

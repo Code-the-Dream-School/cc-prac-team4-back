@@ -5,7 +5,6 @@ const {
   UnauthenticatedError,
   NotFoundError,
 } = require("../../errors");
-//auth
 
 const registerUser = async (req, res) => {
   const user = await User.create({ ...req.body });
