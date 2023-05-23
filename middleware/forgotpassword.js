@@ -6,6 +6,8 @@ const bcrypt = require("bcryptjs");
 const NotFoundError = require("../errors/not-found");
 const sendToken = require("./jwtToken");
 
+//forgot password
+
 const forgotPassword = async (req, res, next) => {
   //const email = req.body.email;
   const user = await User.findOne({ email: req.body.email });

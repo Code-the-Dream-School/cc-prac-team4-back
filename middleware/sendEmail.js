@@ -1,6 +1,8 @@
 const nodemailer = require("nodemailer");
 const { StatusCodes } = require("http-status-codes");
 
+//send email
+
 const sendEmail = async (options) => {
   try {
     const transporter = nodemailer.createTransport({

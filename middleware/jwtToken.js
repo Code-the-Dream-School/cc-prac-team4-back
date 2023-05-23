@@ -2,6 +2,8 @@ const JWT = require("jsonwebtoken");
 const User = require("../models/userModel");
 const { UnauthenticatedError } = require("../errors");
 
+//jwt token
+
 const sendToken = (req, res, next) => {
   const authHeader = req.headers.authorization;
   if (!authHeader || !authHeader.startsWith("Bearer ")) {

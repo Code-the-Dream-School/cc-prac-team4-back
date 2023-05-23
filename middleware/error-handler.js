@@ -7,6 +7,8 @@ const errorHandlerMiddleware = (err, req, res, next) => {
     msg: err.message || "Something went wrong. Please try again later",
   };
 
+  //error-handler
+
   if (err.name === "ValidationError") {
     console.log(Object.values(err.errors));
     customError.msg = Object.values(err.errors)

@@ -2,6 +2,8 @@ const User = require("../models/userModel");
 const jwt = require("jsonwebtoken");
 const { UnauthenticatedError } = require("../errors");
 
+//auth-cookies
+
 const auth = async (req, res, next) => {
   const auth_cookie = req.signedCookies.user;
   if (!auth_cookie) {
