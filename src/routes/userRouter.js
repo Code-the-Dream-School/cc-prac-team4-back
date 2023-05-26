@@ -2,11 +2,6 @@ const express = require("express");
 const router = express.Router();
 
 const {
-  registerUser,
-  loginUser,
-  logout,
-  forgotPasswordController,
-  resetPasswordController,
   getUserDetails,
   updatePassword,
   updateProfile,
@@ -15,13 +10,8 @@ const {
   updateUserRole,
   deleteUser,
 } = require("../controllers/userController");
-const { auth, authorizeRoles } = require("../../middleware/authentication");
+const { auth, authorizeRoles } = require("../../middleware/auth-cookies");
 
-router.post("/register", registerUser);
-router.post("/login", loginUser);
-router.get("/logout", logout);
-router.post("/password/forgot", forgotPasswordController);
-router.put("/password/reset", resetPasswordController);
 router.get("/me/:id", auth, getUserDetails);
 router.put("/me/password/update/:id", auth, updatePassword);
 router.patch("/me/update/:id", auth, updateProfile);
