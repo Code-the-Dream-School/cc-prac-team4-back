@@ -8,6 +8,8 @@ require("express-async-errors");
 require("dotenv").config();
 const cookieParser = require("cookie-parser");
 
+//app
+
 const mainRouter = require("./routes/mainRouter.js");
 const userRouter = require("./routes/userRouter.js");
 const authRouter = require("./routes/authRoter.js");
