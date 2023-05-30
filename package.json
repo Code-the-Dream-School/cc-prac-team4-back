@@ -1,7 +1,7 @@
 {
-  "name": "bb-practicum-team-1-back",
+  "name": "bb-practicum-team-4-back",
   "version": "1.0.0",
-  "description": "Back-End Repo for Team 4 of Chimp/Cocatoo Practicum",
+  "description": "Back-End Repo for Team 4 of Chimp/Cockatoo Practicum",
   "main": "app.js",
   "scripts": {
     "dev": "nodemon src/server.js"
@@ -11,6 +11,7 @@
   "dependencies": {
     "bcrypt": "^5.1.0",
     "bcryptjs": "^2.4.3",
+    "cookie-parser": "^1.4.6",
     "cors": "^2.8.5",
     "crypto": "^1.0.1",
     "dotenv": "^16.0.3",
