@@ -1,40 +1,40 @@
-const mongoose = require("mongoose");
-const bcrypt = require("bcryptjs");
-const jwt = require("jsonwebtoken");
-const validator = require("validator");
-const crypto = require("crypto");
+const mongoose = require('mongoose');
+const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
+const validator = require('validator');
+const crypto = require('crypto');
 
 const userSchema = new mongoose.Schema(
   {
     name: {
       type: String,
-      required: [true, "Please enter your name"],
-      maxLength: [30, "Name cannot have more than 30 characters"],
-      minLength: [4, "Name cannot have less than 4 characters"],
+      required: [true, 'Please enter your name'],
+      maxLength: [30, 'Name cannot have more than 30 characters'],
+      minLength: [4, 'Name cannot have less than 4 characters'],
     },
     email: {
       type: String,
-      required: [true, "Please enter your email"],
-      unique: [true, "This email is already used"],
-      validate: [validator.isEmail, "Please enter a valid email"],
+      required: [true, 'Please enter your email'],
+      unique: [true, 'This email is already used'],
+      validate: [validator.isEmail, 'Please enter a valid email'],
     },
     password: {
       type: String,
-      required: [true, "Please enter your password"],
-      minLength: [8, "Password cannot have less than 8 characters"],
-      maxLength: [20, "Password cannot have more than 20 characters"],
+      required: [true, 'Please enter your password'],
+      minLength: [8, 'Password cannot have less than 8 characters'],
+      maxLength: [20, 'Password cannot have more than 20 characters'],
     },
     userImage: {
       type: String,
-      default: "user.png",
+      default: 'user.png',
     },
     role: {
       type: String,
       enum: {
-        values: ["user", "admin"],
-        message: "{VALUE} is not supported",
+        values: ['user', 'admin'],
+        message: '{VALUE} is not supported',
       },
-      default: "user",
+      default: 'user',
     },
     createdAt: {
       type: Date,
@@ -48,8 +48,8 @@ const userSchema = new mongoose.Schema(
   }
 );
 
-userSchema.pre("save", async function (next) {
-  if (!this.isModified("password")) {
+userSchema.pre('save', async function (next) {
+  if (!this.isModified('password')) {
     next();
   }
   const salt = await bcrypt.genSalt(10);
@@ -72,13 +72,13 @@ userSchema.methods.comparePassword = async function (candidatePassword) {
 };
 
 userSchema.methods.getResetPasswordToken = function () {
-  const resetToken = crypto.randomBytes(20).toString("hex");
+  const resetToken = crypto.randomBytes(20).toString('hex');
   this.resetPasswordToken = crypto
-    .createHash("sha256")
+    .createHash('sha256')
     .update(resetToken)
-    .digest("hex");
+    .digest('hex');
   this.resetPassworExpire = Date.now() + 15 * 60 * 1000;
   return resetToken;
 };
 
-module.exports = mongoose.model("User", userSchema);
+module.exports = mongoose.model('User', userSchema);
