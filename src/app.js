@@ -4,9 +4,18 @@ const app = express();
 const cors = require('cors');
 const favicon = require('express-favicon');
 const logger = require('morgan');
-//routers
+
+require('express-async-errors');
+require('dotenv').config();
+const cookieParser = require('cookie-parser');
+
+//app
+
 const mainRouter = require('./routes/mainRouter.js');
+const userRouter = require('./routes/userRouter.js');
+const authRouter = require('./routes/authRoter.js');
 const petRouter = require('./routes/petRoutes.js');
+const errorHandlerMiddleware = require('./middleware/error-handler.js');
 
 // middleware
 const notFoundMiddleware = require('./middleware/not-found');
@@ -18,12 +27,17 @@ app.use(express.urlencoded({ extended: false }));
 app.use(logger('dev'));
 app.use(express.static('public'));
 app.use(favicon(__dirname + '/public/favicon.ico'));
+app.use(cookieParser());
 
 // routes middleware
 app.use('/api/v1', mainRouter);
+
+app.use('/api/v1', userRouter);
+app.use('/api/v1', authRouter);
 app.use('/api/v1/pets', petRouter);
 
 app.use(notFoundMiddleware);
 app.use(errorHandlerMiddleware);
+
 
 module.exports = app;
