@@ -1,5 +1,5 @@
-const nodemailer = require("nodemailer");
-const { StatusCodes } = require("http-status-codes");
+const nodemailer = require('nodemailer');
+const { StatusCodes } = require('http-status-codes');
 
 const sendEmail = async (options) => {
   try {

@@ -1,14 +1,14 @@
-const User = require("../../models/userModel");
-const { StatusCodes } = require("http-status-codes");
+const User = require('../models/userModel');
+const { StatusCodes } = require('http-status-codes');
 const {
   BadRequestError,
   UnauthenticatedError,
   NotFoundError,
-} = require("../../errors");
+} = require('../errors');
 const {
   forgotPassword,
   resetPassword,
-} = require("../../middleware/forgotpassword");
+} = require('../middleware/forgotpassword');
 
 const forgotPasswordController = async (req, res, next) => {
   const forgotPaswordService = await forgotPassword(req.body.email);

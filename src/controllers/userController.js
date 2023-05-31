@@ -1,10 +1,10 @@
-const User = require("../../models/userModel");
-const { StatusCodes } = require("http-status-codes");
+const User = require('../models/userModel');
+const { StatusCodes } = require('http-status-codes');
 const {
   BadRequestError,
   UnauthenticatedError,
   NotFoundError,
-} = require("../../errors");
+} = require('../errors');
 
 const getUserDetails = async (req, res, next) => {
   const user = await User.findById(req.params.id);
@@ -16,16 +16,16 @@ const getUserDetails = async (req, res, next) => {
 };
 
 const updatePassword = async (req, res, next) => {
-  const user = await User.findById(req.params.id).select("+password");
+  const user = await User.findById(req.params.id).select('+password');
   const isPasswordCorrect = await user.comparePassword(req.body.oldPassword);
   if (!user) {
     throw new NotFoundError(`No user with id ${req.params.id}`);
   } else {
     if (!isPasswordCorrect) {
-      throw new UnauthenticatedError("Invalid Password");
+      throw new UnauthenticatedError('Invalid Password');
     }
     if (req.body.newPassword !== req.body.confirmPassword) {
-      throw new UnauthenticatedError("Password does not match");
+      throw new UnauthenticatedError('Password does not match');
     }
     user.password = req.body.newPassword;
     await user.save();
@@ -41,8 +41,8 @@ const updateProfile = async (req, res, next) => {
     params: { id: userId },
   } = req;
 
-  if (name === "") {
-    throw new BadRequestError("Name field cannot be empty");
+  if (name === '') {
+    throw new BadRequestError('Name field cannot be empty');
   }
   const user = await User.findByIdAndUpdate({ _id: userId }, req.body, {
     new: true,
@@ -97,7 +97,7 @@ const deleteUser = async (req, res, next) => {
   }
   res
     .status(StatusCodes.OK)
-    .json({ msg: " The user was successfully deleted" });
+    .json({ msg: ' The user was successfully deleted' });
 };
 
 module.exports = {
