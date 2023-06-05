@@ -2,7 +2,7 @@ const User = require('../models/userModel');
 const jwt = require('jsonwebtoken');
 const { UnauthenticatedError } = require('../errors');
 
-const auth = async (req, res, next) => {
+const isAuth = async (req, res, next) => {
   const auth_cookie = req.signedCookies.user;
   if (!auth_cookie) {
     const authHeader = req.headers.authorization;
@@ -38,13 +38,14 @@ const auth = async (req, res, next) => {
   }
 };
 
-const authorizeRoles = async (req, res, next) => {
+const isAdmin = async (req, res, next) => {
   const user = await User.findById(req.params.id);
+
   if (user.role !== 'admin') {
     throw new UnauthenticatedError(
-      `Role: ${req.user.role} is not allowed to access this resource`
+      `Role: "${user.role}" is not allowed to access this resource`
     );
   }
   next();
 };
-module.exports = { auth, authorizeRoles };
+module.exports = { isAuth, isAdmin };

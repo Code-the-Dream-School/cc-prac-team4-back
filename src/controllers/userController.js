@@ -64,9 +64,9 @@ const getAllUsers = async (req, res, next) => {
 };
 
 const getSingleUser = async (req, res, next) => {
-  const user = await User.findById(req.body.userId);
+  const user = await User.findById(req.params.id);
   if (!user) {
-    throw new NotFoundError(`No user with id ${req.body.userId}`);
+    throw new NotFoundError(`No user with id ${req.params.id}`);
   } else {
     res.status(StatusCodes.OK).json({ user });
   }
@@ -76,7 +76,7 @@ const updateUserRole = async (req, res, next) => {
   const newUserData = {
     role: req.body.role,
   };
-  const user = await User.findByIdAndUpdate(req.body.userId, newUserData, {
+  const user = await User.findByIdAndUpdate(req.params.id, newUserData, {
     new: true,
     runValidators: true,
     useFindAndModify: false,
@@ -91,9 +91,9 @@ const updateUserRole = async (req, res, next) => {
 };
 
 const deleteUser = async (req, res, next) => {
-  const user = await User.findByIdAndRemove(req.body.userId);
+  const user = await User.findByIdAndRemove(req.params.id);
   if (!user) {
-    throw new NotFoundError(`No user with id ${req.body.userId}`);
+    throw new NotFoundError(`No user with id ${req.params.id}`);
   }
   res
     .status(StatusCodes.OK)
