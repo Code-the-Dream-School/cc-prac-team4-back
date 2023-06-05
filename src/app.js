@@ -5,7 +5,6 @@ const cors = require('cors');
 const favicon = require('express-favicon');
 const logger = require('morgan');
 
-require('express-async-errors');
 require('dotenv').config();
 const cookieParser = require('cookie-parser');
 

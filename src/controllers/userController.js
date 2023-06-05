@@ -64,9 +64,9 @@ const getAllUsers = async (req, res, next) => {
 };
 
 const getSingleUser = async (req, res, next) => {
-  const user = await User.findById(req.body.userId);
+  const user = await User.findById(req.body.id);
   if (!user) {
-    throw new NotFoundError(`No user with id ${req.body.userId}`);
+    throw new NotFoundError(`No user with id ${req.body.id}`);
   } else {
     res.status(StatusCodes.OK).json({ user });
   }
