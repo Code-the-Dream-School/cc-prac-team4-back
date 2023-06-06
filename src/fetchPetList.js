@@ -39,11 +39,14 @@ const fetchPetList = async () => {
         createdBy: new mongoose.Types.ObjectId(), // Use 'new' keyword to invoke the ObjectId constructor
         description: animal.description || 'No description available', // Use a default value if description is not available
         petName: animal.name || '',
+        petType: 'Cat',
+        image: animal.image || '/uploads/example.jpeg', // URL image or use a default image
         // Map other fields from the animal object as needed
       };
     });
 
-    await Pet.create(pets);
+    // await Pet.create(pets);
+    await Pet.insertMany(pets); // `insertMany` to insert multiple pets at once
     console.log('Success');
     process.exit(0);
   } catch (error) {
