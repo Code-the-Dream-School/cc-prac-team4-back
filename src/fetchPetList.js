@@ -26,7 +26,7 @@ const fetchPetList = async () => {
     const { access_token } = response.data;
 
     const petResponse = await axios.get(
-      'https://api.petfinder.com/v2/animals?type=cat&limit=100',
+      'https://api.petfinder.com/v2/animals?type=dog&limit=100',
       {
         headers: {
           Authorization: `Bearer ${access_token}`,
@@ -39,8 +39,15 @@ const fetchPetList = async () => {
         createdBy: new mongoose.Types.ObjectId(), // Use 'new' keyword to invoke the ObjectId constructor
         description: animal.description || 'No description available', // Use a default value if description is not available
         petName: animal.name || '',
-        petType: 'Cat',
-        image: animal.image || '/uploads/example.jpeg', // URL image or use a default image
+        petType: 'Dog',
+        image:
+          animal.photos.length > 0
+            ? animal.photos[0].medium
+            : '/uploads/example.jpeg', // URL image or use a default image
+        // breed:
+        //   animal.breeds && Object.keys(animal.breeds).length > 0
+        //     ? animal.breeds.primary
+        //     : 'No breed available',
         // Map other fields from the animal object as needed
       };
     });
