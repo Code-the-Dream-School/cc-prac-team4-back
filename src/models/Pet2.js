@@ -9,9 +9,9 @@ const PetSchema = new mongoose.Schema(
     },
     petType: {
       type: String,
-      required: [true, 'Please provide pet type'],
+      enum: ['Cat', 'Dog', 'Other'],
       default: 'Cat',
-      maxlength: [100, 'Type can not be more than 100 characters'],
+      required: [true, 'Please provide type'],
     },
     date: {
       type: Date,
@@ -19,7 +19,7 @@ const PetSchema = new mongoose.Schema(
     },
     description: {
       type: String,
-      required: [true, 'Please provide pet description'],
+      required: [true, 'Please provide product description'],
       maxlength: [2000, 'Description can not be more than 2000 characters'],
     },
     image: {
@@ -28,41 +28,47 @@ const PetSchema = new mongoose.Schema(
     },
     breed: {
       type: String,
-      maxlength: [100, 'Breed can not be more than 100 characters'],
+      enum: [
+        'Domestic Short Hair',
+        'Domestic Medium Hair',
+        'Domestic Long Hair',
+      ],
+      default: 'Domestic Short Hair',
     },
     age: {
       type: String,
+      enum: ['Kitten', 'Young', 'Adult', 'Senior'],
       default: 'Adult',
-      maxlength: [100, 'Age can not be more than 100 characters'],
     },
     size: {
       type: String,
+      enum: ['Small', 'Medium', 'Large'],
       default: 'Medium',
-      maxlength: [100, 'size can not be more than 100 characters'],
     },
     gender: {
       type: String,
+      enum: ['Female', 'Male'],
       default: 'Female',
-      maxlength: [10, 'Gender can not be more than 100 characters'],
     },
     goodWith: {
       type: String,
+      enum: ['Kids', 'Dogs', 'Other Cats'],
       default: 'Kids',
-      maxlength: [100, 'Good with can not be more than 100 characters'],
     },
     coatLength: {
       type: String,
+      enum: ['Short', 'Medium', 'Long'],
       default: 'Short',
-      maxlength: [100, 'Coat length can not be more than 100 characters'],
     },
     color: {
       type: String,
-      maxlength: [100, 'Color can not be more than 100 characters'],
+      enum: ['Tabby', 'Gray', 'Black', 'White', 'Orange', 'Tuxedo'],
+      default: 'Tabby',
     },
     careAndBehaviour: {
       type: String,
+      enum: ['House-trained', 'Declawed', 'Special Needs'],
       default: 'House-trained',
-      maxlength: [100, 'Care can not be more than 100 characters'],
     },
 
     createdBy: {
@@ -71,9 +77,7 @@ const PetSchema = new mongoose.Schema(
       required: [true, 'Please provide user'],
     },
   },
-  
   { timestamps: true }
-
 );
 
 module.exports = mongoose.model('Pet', PetSchema);
