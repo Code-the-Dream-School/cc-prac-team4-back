@@ -57,12 +57,12 @@ const PetSchema = new mongoose.Schema(
     },
     color: {
       type: String,
-      maxlength: [100, 'Color can not be more than 100 characters'],
+      maxlength: [500, 'Color can not be more than 500 characters'],
     },
     careAndBehaviour: {
       type: String,
       default: 'House-trained',
-      maxlength: [100, 'Care can not be more than 100 characters'],
+      maxlength: [500, 'Care can not be more than 500 characters'],
     },
 
     createdBy: {
@@ -71,9 +71,8 @@ const PetSchema = new mongoose.Schema(
       required: [true, 'Please provide user'],
     },
   },
-  
-  { timestamps: true }
 
+  { timestamps: true }
 );
 
 module.exports = mongoose.model('Pet', PetSchema);
