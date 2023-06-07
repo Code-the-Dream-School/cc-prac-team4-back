@@ -64,10 +64,9 @@ const PetSchema = new mongoose.Schema(
       default: 'House-trained',
       maxlength: [100, 'Care can not be more than 100 characters'],
     },
-
-    user: {
+    createdBy: {
       type: mongoose.Types.ObjectId,
-      ref: 'userModel',
+      ref: 'User',
       required: [true, 'Please provide user'],
     },
   },
