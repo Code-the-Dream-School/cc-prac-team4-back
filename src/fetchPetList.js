@@ -25,16 +25,6 @@ const fetchPetList = async () => {
     );
     const { access_token } = response.data;
 
-//    const colorResponse = await axios.get(
-//      'https://api.petfinder.com/v2/types/colors',
-//      {
-//        headers: {
-//          Authorization: `Bearer ${access_token}`,
-//        },
-//      }
-//    );
-//    console.log(colorResponse);
-
     const petResponse = await axios.get(
       'https://api.petfinder.com/v2/animals?type=cat&limit=100',
       {
@@ -59,14 +49,16 @@ const fetchPetList = async () => {
         gender: animal.gender,
         coatLength: animal.coat || 'This information is not provided',
         goodWith:
-          JSON.stringify(animal.environment) ||
+          JSON.stringify(animal.environment).split(',') ||
           'This information is not provided',
         breed:
-          JSON.stringify(animal.breeds) || 'This information is not provided',
+          JSON.stringify(animal.breeds).split(',')[0].split(':')[1] ||
+          'This information is not provided',
         color:
-          JSON.stringify(animal.colors) || 'This information is not provided',
+          JSON.stringify(animal.colors).split(',')[0].split(':')[1] ||
+          'This information is not provided',
         careAndBehaviour:
-          JSON.stringify(animal.attributes) ||
+          JSON.stringify(animal.attributes).split(',') ||
           'This information is not provided',
 
         // breed:
