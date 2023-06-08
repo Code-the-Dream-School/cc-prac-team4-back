@@ -38,12 +38,9 @@ const fetchPetList = async () => {
       return {
         createdBy: new mongoose.Types.ObjectId(), // Use 'new' keyword to invoke the ObjectId constructor
         description: animal.description || 'No description available', // Use a default value if description is not available
-        petName: animal.name || '',
+        petName: animal.name,
         petType: animal.type,
-        image:
-          animal.photos.length > 0
-            ? animal.photos[0].medium
-            : '/uploads/example.jpeg', // URL image or use a default image
+        image: animal.photos,
         age: animal.age,
         size: animal.size,
         gender: animal.gender,
