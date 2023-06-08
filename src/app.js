@@ -25,7 +25,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(logger('dev'));
 app.use(express.static('public'));
 app.use(favicon(__dirname + '/public/favicon.ico'));
-app.use(cookieParser());
+app.use(cookieParser(process.env.JWT_SECRET));
 
 // routes middleware
 app.use('/api/v1', mainRouter);
