@@ -14,6 +14,7 @@ const registerUser = async (req, res) => {
     .cookie('token', token, {
       expires: new Date(Date.now() + 60 * 24 * 3600000),
       httpOnly: true,
+      signed: true,
     })
     .json({ user: { name: user.name }, token, userId: user._id });
 };
@@ -40,6 +41,7 @@ const loginUser = async (req, res) => {
     .cookie('token', token, {
       expires: new Date(Date.now() + 60 * 24 * 3600000),
       httpOnly: true,
+      signed: true,
     })
     .json({ user: { name: user.name }, token, userId: user._id });
 };
