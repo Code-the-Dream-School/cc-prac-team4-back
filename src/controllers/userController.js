@@ -7,66 +7,63 @@ const {
 } = require('../errors');
 
 const getUserDetails = async (req, res, next) => {
-  const user = await User.findById(req.params.id);
-  if (!user) {
-    throw new NotFoundError(`No user with id ${req.params.id}`);
-  } else {
-    res.status(StatusCodes.OK).json({ user });
-  }
+  res.status(StatusCodes.OK).json({ user: req.user });
 };
 
 const updatePassword = async (req, res, next) => {
-  const user = await User.findById(req.params.id).select('+password');
-  const isPasswordCorrect = await user.comparePassword(req.body.oldPassword);
-  if (!user) {
-    throw new NotFoundError(`No user with id ${req.params.id}`);
-  } else {
-    if (!isPasswordCorrect) {
-      throw new UnauthenticatedError('Invalid Password');
-    }
-    if (req.body.newPassword !== req.body.confirmPassword) {
-      throw new UnauthenticatedError('Password does not match');
-    }
-    user.password = req.body.newPassword;
-    await user.save();
-    res.status(StatusCodes.OK).json({
-      msg: `Password for user ${user.name} was successfully updated `,
-    });
+  const { oldPassword, newPassword, confirmPassword } = req.body;
+  console.log(oldPassword, newPassword, confirmPassword);
+  if (!oldPassword || !newPassword || !confirmPassword) {
+    throw new BadRequestError('Please provide both values');
   }
+  const user = await User.findById({ _id: req.user.userId });
+
+  const isPasswordCorrect = await user.comparePassword(oldPassword);
+  if (!isPasswordCorrect) {
+    throw new UnauthenticatedError('Invalid Credentials');
+  }
+  if (newPassword !== confirmPassword) {
+    throw new UnauthenticatedError('Password does not match');
+  }
+  user.password = newPassword;
+
+  await user.save();
+  res.status(StatusCodes.OK).json({ msg: 'Password was successfully updated' });
 };
 
 const updateProfile = async (req, res, next) => {
-  const {
-    body: { name, userImage },
-    params: { id: userId },
-  } = req;
+  const { email, name } = req.body;
+  if (!email || !name) {
+    throw new BadRequestError('Please provide name and email');
+  }
+  const user = await User.findByIdAndUpdate(
+    { _id: req.user.userId },
+    { email, name },
+    { new: true, runValidators: true }
+  );
 
-  if (name === '') {
-    throw new BadRequestError('Name field cannot be empty');
-  }
-  const user = await User.findByIdAndUpdate({ _id: userId }, req.body, {
-    new: true,
-    runValidators: true,
-  });
-  if (!user) {
-    throw new NotFoundError(`No user with id ${userId}`);
-  }
-  res.status(StatusCodes.OK).json({
-    msg: `User profile for user with id ${userId} was sucessfully updated`,
-  });
+  const token = user.createJWT();
+  res
+    .status(StatusCodes.OK)
+    .cookie('token', token, {
+      expires: new Date(Date.now() + 60 * 24 * 3600000),
+      httpOnly: true,
+      signed: true,
+    })
+    .json({ user: { name: user.name }, token, userId: user._id });
 };
 
 //admin cotrollers
 
 const getAllUsers = async (req, res, next) => {
-  const users = await User.find();
+  const users = await User.find({ role: 'user' }).select('-password');
   res.status(StatusCodes.OK).json({ users });
 };
 
 const getSingleUser = async (req, res, next) => {
-  const user = await User.findById(req.body.id);
+  const user = await User.findById({ _id: req.params.id }).select('-password');
   if (!user) {
-    throw new NotFoundError(`No user with id ${req.body.id}`);
+    throw new NotFoundError(`No user with id ${req.params.id}`);
   } else {
     res.status(StatusCodes.OK).json({ user });
   }
