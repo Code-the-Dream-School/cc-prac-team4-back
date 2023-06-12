@@ -29,9 +29,7 @@ const updatePassword = async (req, res, next) => {
   if (!isPasswordCorrect) {
     throw new UnauthenticatedError('Invalid Credentials');
   }
-  if (newPassword !== confirmPassword) {
-    throw new UnauthenticatedError('Password does not match');
-  }
+
   user.password = newPassword;
 
   await user.save();
