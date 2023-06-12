@@ -7,13 +7,20 @@ const {
 } = require('../errors');
 
 const getUserDetails = async (req, res, next) => {
-  res.status(StatusCodes.OK).json({ user: req.user });
+  const user = await User.findById({ _id: req.user.userId }).select(
+    '-password'
+  );
+  if (!user) {
+    throw new UnauthenticatedError('invalid credentials');
+  }
+
+  res.status(StatusCodes.OK).json({ user });
 };
 
 const updatePassword = async (req, res, next) => {
-  const { oldPassword, newPassword, confirmPassword } = req.body;
-  console.log(oldPassword, newPassword, confirmPassword);
-  if (!oldPassword || !newPassword || !confirmPassword) {
+  const { oldPassword, newPassword } = req.body;
+  console.log(oldPassword, newPassword);
+  if (!oldPassword || !newPassword) {
     throw new BadRequestError('Please provide both values');
   }
   const user = await User.findById({ _id: req.user.userId });
@@ -22,9 +29,7 @@ const updatePassword = async (req, res, next) => {
   if (!isPasswordCorrect) {
     throw new UnauthenticatedError('Invalid Credentials');
   }
-  if (newPassword !== confirmPassword) {
-    throw new UnauthenticatedError('Password does not match');
-  }
+
   user.password = newPassword;
 
   await user.save();
@@ -50,7 +55,7 @@ const updateProfile = async (req, res, next) => {
       httpOnly: true,
       signed: true,
     })
-    .json({ user: { name: user.name }, token, userId: user._id });
+    .json({ msg: 'Success! Profile Updated.' });
 };
 
 //admin cotrollers
