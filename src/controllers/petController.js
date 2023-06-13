@@ -1,18 +1,53 @@
+const Pet = require('../models/Pet');
+const { StatusCodes } = require('http-status-codes');
+const { NotFoundError } = require('../errors');
+
 const createPet = async (req, res) => {
-  res.send('create pet');
+  req.body.createdBy = req.user.userId;
+  const pet = await Pet.create(req.body);
+  res.status(StatusCodes.CREATED).json({ pet });
 };
+
 const getAllPets = async (req, res) => {
-  res.send('get all pets');
+  const pets = await Pet.find({});
+
+  res.status(StatusCodes.OK).json({ pets, count: pets.length });
 };
+
 const getSinglePet = async (req, res) => {
-  res.send('get single pet');
+  const { id: petId } = req.params;
+
+  const pet = await Pet.findById({ _id: petId });
+
+  if (!pet) {
+    throw NotFoundError(`No pet with id : ${petId}`);
+  }
+  res.status(StatusCodes.OK).json({ pet });
 };
+
 const updatePet = async (req, res) => {
-  res.send('update pet');
+  const { id: petId } = req.params;
+
+  const pet = await Pet.findByIdAndUpdate({ _id: petId }, req.body, {
+    new: true,
+    runValidators: true,
+  });
+
+  if (!pet) {
+    throw NotFoundError(`No pet with id : ${petId}`);
+  }
+  res.status(StatusCodes.OK).json({ pet });
 };
 const deletePet = async (req, res) => {
-  res.send('delete pet');
+  const { id: petId } = req.params;
+  const pet = await Pet.findByIdAndRemove({ _id: petId });
+  if (!pet) {
+    throw NotFoundError(`No pet with id : ${petId}`);
+  }
+
+  res.status(StatusCodes.OK).json({ msg: 'Success! Pet Removed' });
 };
+
 const uploadImage = async (req, res) => {
   res.send('upload image');
 };

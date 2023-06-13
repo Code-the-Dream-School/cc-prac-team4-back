@@ -1,4 +1,5 @@
 const express = require('express');
+const { isAuth, isAdmin } = require('../middleware/auth-cookies');
 const router = express.Router();
 const {
   createPet,
@@ -9,10 +10,14 @@ const {
   uploadImage,
 } = require('../controllers/petController');
 
-router.route('/').post(createPet).get(getAllPets);
+router.route('/').post(isAuth, isAdmin, createPet).get(getAllPets);
 
-router.route('/uploadImage').post(uploadImage);
+router.route('/uploadImage').post(isAuth, isAdmin, uploadImage);
 
-router.route('/:id').get(getSinglePet).patch(updatePet).delete(deletePet);
+router
+  .route('/:id')
+  .get(getSinglePet)
+  .patch(isAuth, isAdmin, updatePet)
+  .delete(isAuth, isAdmin, deletePet);
 
 module.exports = router;
