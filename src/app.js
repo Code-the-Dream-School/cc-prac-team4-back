@@ -12,7 +12,7 @@ const cookieParser = require('cookie-parser');
 
 const mainRouter = require('./routes/mainRouter.js');
 const userRouter = require('./routes/userRouter.js');
-const authRouter = require('./routes/authRoter.js');
+const authRouter = require('./routes/authRouter.js');
 const petRouter = require('./routes/petRoutes.js');
 
 // middleware

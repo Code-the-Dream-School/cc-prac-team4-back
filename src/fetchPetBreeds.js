@@ -1,11 +1,11 @@
 const axios = require('axios');
 const querystring = require('querystring');
 require('dotenv').config();
-const PetColor = require('./models/colorModel');
+const PetBreed = require('./models/breedModel');
 const connectDB = require('./db/connect');
 const mongoose = require('mongoose');
 
-const fetchPetColorList = async () => {
+const fetchPetBreedsList = async () => {
   try {
     await connectDB(process.env.MONGO_URI);
     const payload = querystring.stringify({
@@ -24,32 +24,27 @@ const fetchPetColorList = async () => {
     );
     const { access_token } = response.data;
 
-    const colorResponse = await axios.get(
-      'https://api.petfinder.com/v2/types/dog',
+    const breedResponse = await axios.get(
+      'https://api.petfinder.com/v2/types/cat/breeds',
       {
         headers: {
           Authorization: `Bearer ${access_token}`,
         },
       }
     );
-    const colors = Object.values(colorResponse.data.type.colors);
-    const theLength = Number(colors.length);
 
-    colors.forEach(async (color) => {
-      let petColors = {
-        petType: colorResponse.data.type.name,
-        colorName: color,
+    const breeds = breedResponse.data.breeds;
+    //console.log(breeds);
+
+    breeds.forEach(async () => {
+      let petBreeds = {
+        petType: 'Cat',
+        breedName: breeds.name,
         createdBy: new mongoose.Types.ObjectId(),
       };
-      console.log(petColors);
-      //return petColors;
-      await PetColor.insertMany(petColors);
+      console.log(petBreeds);
+      await PetBreed.insertMany(petBreeds);
     });
-
-    // console.log(colors);
-    // console.log(theLength);
-
-    // console.log('Success. Colors are fetched.');
 
     process.exit(0);
   } catch (error) {
@@ -58,4 +53,4 @@ const fetchPetColorList = async () => {
   }
 };
 
-fetchPetColorList();
+fetchPetBreedsList();
