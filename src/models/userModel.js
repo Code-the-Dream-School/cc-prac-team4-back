@@ -40,6 +40,7 @@ const userSchema = new mongoose.Schema(
       type: Date,
       default: Date.now,
     },
+    favorites: [{ type: mongoose.Types.ObjectId, ref: 'Pet' }],
     resetPasswordToken: String,
     resetPassworExpire: Date,
   },
