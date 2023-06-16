@@ -19,7 +19,7 @@ const PetSchema = new mongoose.Schema(
     },
     description: {
       type: String,
-      required: [true, 'Please provide pet description'],
+      // required: [true, 'Please provide pet description'],
       maxlength: [2000, 'Description can not be more than 2000 characters'],
     },
     image: {
