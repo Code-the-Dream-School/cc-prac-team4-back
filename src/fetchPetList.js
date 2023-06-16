@@ -26,7 +26,7 @@ const fetchPetList = async () => {
     const { access_token } = response.data;
 
     const petResponse = await axios.get(
-      'https://api.petfinder.com/v2/animals?type=cat&limit=100',
+      'https://api.petfinder.com/v2/animals?type=dog&limit=100',
       {
         headers: {
           Authorization: `Bearer ${access_token}`,
@@ -37,36 +37,25 @@ const fetchPetList = async () => {
     const pets = petResponse.data.animals.map((animal) => {
       return {
         createdBy: new mongoose.Types.ObjectId(), // Use 'new' keyword to invoke the ObjectId constructor
-        description: animal.description || 'No description available', // Use a default value if description is not available
+        description: animal.description || null,
         petName: animal.name,
         petType: animal.type,
         image: animal.photos,
         age: animal.age,
         size: animal.size,
         gender: animal.gender,
-        coatLength: animal.coat || 'This information is not provided',
-        goodWith:
-          JSON.stringify(animal.environment).split(',') ||
-          'This information is not provided',
+        coatLength: animal.coat || null,
+        goodWith: JSON.stringify(animal.environment).split(',') || null,
         breed:
-          JSON.stringify(animal.breeds).split(',')[0].split(':')[1] ||
-          'This information is not provided',
+          JSON.parse(
+            JSON.stringify(animal.breeds).split(',')[0].split(':')[1]
+          ) || null,
         color:
-          JSON.stringify(animal.colors).split(',')[0].split(':')[1] ||
-          'This information is not provided',
-        careAndBehaviour:
-          JSON.stringify(animal.attributes).split(',') ||
-          'This information is not provided',
-
-        // breed:
-        //   animal.breeds && Object.keys(animal.breeds).length > 0
-        //     ? animal.breeds.primary
-        //     : 'No breed available',
-        // Map other fields from the animal object as needed
+          JSON.stringify(animal.colors).split(',')[0].split(':')[1] || null,
+        careAndBehaviour: JSON.stringify(animal.attributes).split(',') || null,
       };
     });
 
-    // await Pet.create(pets);
     await Pet.insertMany(pets); // `insertMany` to insert multiple pets at once
     console.log('Success');
     process.exit(0);

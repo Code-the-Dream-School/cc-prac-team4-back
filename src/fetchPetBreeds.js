@@ -2,7 +2,7 @@ const axios = require('axios');
 const querystring = require('querystring');
 require('dotenv').config();
 
-const fetchPetColorList = async () => {
+const fetchPetBreedsList = async () => {
   try {
     const payload = querystring.stringify({
       grant_type: 'client_credentials',
@@ -20,18 +20,18 @@ const fetchPetColorList = async () => {
     );
     const { access_token } = response.data;
 
-    const colorResponse = await axios.get(
-      'https://api.petfinder.com/v2/types/dog',
+    const breedResponse = await axios.get(
+      'https://api.petfinder.com/v2/types/dog/breeds',
       {
         headers: {
           Authorization: `Bearer ${access_token}`,
         },
       }
     );
-    const data = colorResponse.data;
+
+    const data = breedResponse.data;
     console.log(data);
-    console.log(data.type.colors.length);
-    //console.log('Success');
+    console.log(data.breeds.length);
 
     process.exit(0);
   } catch (error) {
@@ -40,7 +40,7 @@ const fetchPetColorList = async () => {
   }
 };
 
-fetchPetColorList();
+fetchPetBreedsList();
 
-//30 cats colors
-//15 dog colors
+//68 cat breeds
+//275 dog breeds
