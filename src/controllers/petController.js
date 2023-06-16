@@ -1,6 +1,7 @@
 const Pet = require('../models/Pet');
 const { StatusCodes } = require('http-status-codes');
-const { NotFoundError } = require('../errors');
+const { NotFoundError, BadRequestError } = require('../errors');
+const path = require('path');
 
 const createPet = async (req, res) => {
   req.body.createdBy = req.user.userId;
@@ -49,7 +50,26 @@ const deletePet = async (req, res) => {
 };
 
 const uploadImage = async (req, res) => {
-  res.send('upload image');
+  if (!req.files) {
+    throw new BadRequestError('No File Uploaded');
+  }
+  const petImage = req.files.image;
+  if (!petImage.mimetype.startsWith('image')) {
+    throw new BadRequestError('Please upload image');
+  }
+
+  const maxSize = 2048 * 2048;
+  if (petImage.size > maxSize) {
+    throw new BadRequestError('Please upload image smaller than 4 MB');
+  }
+
+  const imagePath = path.join(
+    __dirname,
+    '../../public/uploads/' + `${petImage.name}`
+  );
+  await petImage.mv(imagePath);
+
+  res.status(StatusCodes.OK).json({ image: `/uploads/${petImage.name}` });
 };
 
 module.exports = {
