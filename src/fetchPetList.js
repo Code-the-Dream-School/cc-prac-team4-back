@@ -45,14 +45,20 @@ const fetchPetList = async () => {
         size: animal.size,
         gender: animal.gender,
         coatLength: animal.coat || null,
-        goodWith: JSON.stringify(animal.environment).split(',') || null,
+        goodWith:
+          JSON.parse(JSON.stringify(animal.environment).split(',')) || null,
         breed:
-          JSON.parse(
-            JSON.stringify(animal.breeds).split(',')[0].split(':')[1]
-          ) || null,
+          JSON.stringify(animal.breeds)
+            .split(',')[0]
+            .split(':')[1]
+            .replace(/[^a-zA-Z ]/g, '') || null,
         color:
-          JSON.stringify(animal.colors).split(',')[0].split(':')[1] || null,
-        careAndBehaviour: JSON.stringify(animal.attributes).split(',') || null,
+          JSON.stringify(animal.colors)
+            .split(',')[0]
+            .split(':')[1]
+            .replace(/[^a-zA-Z /]/g, '') || null,
+        careAndBehaviour:
+          JSON.parse(JSON.stringify(animal.attributes).split(',')) || null,
       };
     });
 
