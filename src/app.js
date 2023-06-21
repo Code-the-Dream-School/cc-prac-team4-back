@@ -7,6 +7,7 @@ const logger = require('morgan');
 
 require('dotenv').config();
 const cookieParser = require('cookie-parser');
+const fileUpload = require('express-fileupload');
 
 //app
 
@@ -28,6 +29,7 @@ app.use(logger('dev'));
 app.use(express.static('public'));
 app.use(favicon(__dirname + '/public/favicon.ico'));
 app.use(cookieParser(process.env.JWT_SECRET));
+app.use(fileUpload());
 
 // routes middleware
 app.use('/api/v1', mainRouter);
