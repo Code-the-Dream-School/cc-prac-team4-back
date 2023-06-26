@@ -3,10 +3,9 @@ const { StatusCodes } = require('http-status-codes');
 
 const sendEmail = async (options) => {
   try {
-    const transporter = nodemailer.createTransport({
-      host: process.env.EMAIL_HOST,
-      port: process.env.EMAIL_PORT,
-      service: process.env.EMAIL_SERVICE,
+    let transporter = nodemailer.createTransport({
+      service: 'outlook',
+      secure: false,
       auth: {
         user: process.env.EMAIL_USERNAME,
         pass: process.env.EMAIL_PASSWORD,
@@ -17,13 +16,15 @@ const sendEmail = async (options) => {
       from: process.env.EMAIL_USERNAME,
       to: options.email,
       subject: options.subject,
-      text: options.message,
+      html: options.html,
     };
 
-    transporter.sendMail(mailOptions, (error, req, res, next) => {
+    let mailInfo = await transporter.sendMail(mailOptions, (error, info) => {
       if (error) {
+        console.log(error);
         return error;
       } else {
+        console.log(info);
         return res(StatusCodes.OK).json({
           success: true,
         });
@@ -33,5 +34,6 @@ const sendEmail = async (options) => {
     return error;
   }
 };
+sendEmail();
 
 module.exports = sendEmail;
