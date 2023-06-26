@@ -29,6 +29,7 @@
     "morgan": "^1.10.0",
     "nodemailer": "^6.9.2",
     "path": "^0.12.7",
+    "stripe": "^12.10.0",
     "validator": "^13.9.0"
   },
   "devDependencies": {
