@@ -20,6 +20,7 @@ const getAllPets = async (req, res) => {
     coatLength,
     color,
     careAndBehaviour,
+    petName,
   } = req.query;
   const queryObject = {};
 
@@ -75,6 +76,13 @@ const getAllPets = async (req, res) => {
   }
   if (careAndBehaviour === 'shots_current') {
     queryObject['careAndBehaviour.shots_current'] = true;
+  }
+
+  if (petName) {
+    queryObject.petName = {
+      $regex: petName,
+      $options: 'i',
+    };
   }
 
   const pets = await Pet.find(queryObject);
