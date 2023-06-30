@@ -9,6 +9,12 @@ require('dotenv').config();
 const cookieParser = require('cookie-parser');
 const fileUpload = require('express-fileupload');
 
+//security
+const helmet = require('helmet');
+const xss = require('xss-clean');
+const rateLimiter = require('express-rate-limit');
+const mongoSanitize = require('express-mongo-sanitize');
+
 //app
 
 const mainRouter = require('./routes/mainRouter.js');
@@ -26,6 +32,15 @@ const errorHandlerMiddleware = require('./middleware/error-handler');
 
 app.use(cors());
 app.use(express.json());
+app.use(helmet());
+app.use(xss());
+app.use(mongoSanitize());
+app.use(
+  rateLimiter({
+    windowMs: 60 * 1000, // 15 minutes
+    max: 100, // each IP is limited to make 100 requests per windowMs
+  })
+);
 app.use(express.urlencoded({ extended: false }));
 app.use(logger('dev'));
 app.use(express.static('public'));
