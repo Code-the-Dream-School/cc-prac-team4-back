@@ -21,6 +21,8 @@ const forgotPasswordController = async (req, res, next) => {
     expiresIn: 60 * 15,
   });
 
+  const resetLink = `${process.env.BASE_URL}/password/reset/${user._id}/${newToken}`;
+
   const message = `<h3> <a href=${process.env.BASE_URL}/password/reset/${user._id}/${newToken}>Reset Password Link</a> </h3> <br> <p>Here is the link to
    reset your 
   password. If you have not requested this email, please ignore it.</P>`;
@@ -34,7 +36,8 @@ const forgotPasswordController = async (req, res, next) => {
 
     res.status(StatusCodes.OK).json({
       success: true,
-      message: `Email with reset password link sent to ${user.email} successfully`,
+      msg: `Email with reset password link sent to ${user.email} successfully`,
+      link: resetLink,
     });
   } catch (error) {
     console.log(error);
@@ -53,7 +56,9 @@ const getResetPasswordController = async (req, res, next) => {
     try {
       const secret = process.env.JWT_SECRET + user.password;
       const payload = jwt.verify(token, secret);
-      res.status(StatusCodes.OK).json({message: `Create new password for ${user.email}`});
+      res
+        .status(StatusCodes.OK)
+        .json({ message: `Create new password for ${user.email}` });
     } catch (error) {
       console.log(error);
       res.send(error.message);

@@ -19,6 +19,7 @@ const favoriteRouter = require('./routes/favoriteRoutes.js');
 const searchRouter = require('./routes/searchRoutes.js');
 const additionalRouter = require('./routes/additionalRouter.js');
 const stripeRouter = require('./routes/stripeRouter.js');
+const adoptionRouter = require('./routes/adoptionRouter.js')
 
 // middleware
 const notFoundMiddleware = require('./middleware/not-found');
@@ -43,6 +44,7 @@ app.use('/api/v1/favorites', favoriteRouter);
 app.use('/api/v1', searchRouter);
 app.use('/api/v1', additionalRouter);
 app.use('/api/v1/stripe', stripeRouter);
+app.use('/api/v1', adoptionRouter);
 
 app.use(notFoundMiddleware);
 app.use(errorHandlerMiddleware);

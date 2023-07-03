@@ -19,7 +19,7 @@ const getUserDetails = async (req, res, next) => {
 
 const updatePassword = async (req, res, next) => {
   const { oldPassword, newPassword } = req.body;
-  console.log(oldPassword, newPassword);
+  //console.log(oldPassword, newPassword);
   if (!oldPassword || !newPassword) {
     throw new BadRequestError('Please provide both values');
   }
