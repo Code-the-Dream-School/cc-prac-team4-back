@@ -16,7 +16,12 @@ const registerUser = async (req, res) => {
       httpOnly: true,
       signed: true,
     })
-    .json({ user: { name: user.name }, token, userId: user._id });
+    .json({
+      user: { name: user.name },
+      token,
+      userId: user._id,
+      expires: new Date(Date.now() + 60 * 24 * 3600000),
+    });
 };
 
 const loginUser = async (req, res) => {
@@ -43,7 +48,12 @@ const loginUser = async (req, res) => {
       httpOnly: true,
       signed: true,
     })
-    .json({ user: { name: user.name }, token, userId: user._id });
+    .json({
+      user: { name: user.name },
+      token,
+      userId: user._id,
+      expires: new Date(Date.now() + 60 * 24 * 3600000),
+    });
 };
 
 const logout = async (req, res) => {
