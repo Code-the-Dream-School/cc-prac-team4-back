@@ -1,0 +1,625 @@
+openapi: 3.0.0
+info:
+  title: Adopt The Dream
+  contact: {}
+  version: '1.0'
+servers:
+  - url: https://pet-shelter.onrender.com/api/v1
+  - url: http://localhost:8000/api/v1
+    variables: {}
+paths:
+  /logout:
+    get:
+      tags:
+        - Auth
+      summary: Logout User
+      operationId: LogoutUser
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+      security: []
+  /register:
+    post:
+      tags:
+        - Auth
+      summary: Register User
+      operationId: RegisterUser
+      parameters: []
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/RegisterUserRequest'
+                - example:
+                    name: anna
+                    email: anna@test.com
+                    password: secret123
+            example:
+              name: anna
+              email: anna@test.com
+              password: secret123
+        required: true
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+      security: []
+  /login:
+    post:
+      tags:
+        - Auth
+      summary: Login User
+      operationId: LoginUser
+      parameters: []
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/LoginUserRequest'
+                - example:
+                    email: peter@test.com
+                    password: '12345678'
+            example:
+              email: peter@test.com
+              password: '12345678'
+        required: true
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+  /me:
+    get:
+      tags:
+        - User
+      summary: Show Current User
+      operationId: ShowCurrentUser
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+      security:
+        - bearer: []
+  /admin/users:
+    get:
+      tags:
+        - User
+      summary: Get All Users
+      operationId: GetAllUsers
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+      security:
+        - bearer: []
+  /admin/{id}:
+    get:
+      tags:
+        - User
+      summary: Get Single User
+      operationId: GetSingleUser
+      parameters:
+        - in: path
+          name: id # Note the name is the same as in the path
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+          description: The user ID
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+      security:
+        - bearer: []
+  /me/password:
+    patch:
+      tags:
+        - User
+      summary: Update User Password
+      operationId: UpdateUserPassword
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+      security:
+        - bearer: []
+  /me/update:
+    patch:
+      tags:
+        - User
+      summary: Update User Profile
+      operationId: UpdateUserProfile
+      parameters: []
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/UpdateUserProfileRequest'
+                - example:
+                    name: peter
+                    email: peter@test.com
+            example:
+              name: peter
+              email: peter@test.com
+        required: true
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+      security:
+        - bearer: []
+  /password/forgot:
+    post:
+      tags:
+        - Password
+      summary: Forgot Password
+      operationId: ForgotPassword
+      parameters: []
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/ForgotPasswordRequest'
+                - example:
+                    email: peter@test.com
+            example:
+              email: peter@test.com
+        required: true
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+  /password/reset/123/12345:
+    get:
+      tags:
+        - Password
+      summary: Reset Password Get
+      operationId: ResetPasswordGet
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+    post:
+      tags:
+        - Password
+      summary: Reset Password Post
+      operationId: ResetPasswordPost
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+  /pets:
+    get:
+      tags:
+        - Pet
+      summary: Get All Pets
+      operationId: GetAllPets
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+      security: []
+    post:
+      tags:
+        - Pet
+      summary: Create Pet
+      operationId: CreatePet
+      parameters: []
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/CreatePetRequest'
+                - example:
+                    petName: Whatsapp
+                    description: sfehfnhfnksdfnksdfnd
+            example:
+              petName: Whatsapp
+              description: sfehfnhfnksdfnksdfnd
+        required: true
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+      security:
+        - bearer: []
+  /pets/{petId}:
+    get:
+      tags:
+        - Pet
+      summary: Get Single Pet
+      operationId: GetSinglePet
+      parameters:
+        - in: path
+          name: petId # Note the name is the same as in the path
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+          description: The pet ID
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+      security: []
+    patch:
+      tags:
+        - Pet
+      summary: Update Pet
+      operationId: UpdatePet
+      parameters:
+        - in: path
+          name: petId # Note the name is the same as in the path
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+          description: The pet ID
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/UpdatePetRequest'
+                - example:
+                    petName: Mist
+                    description: Lorem ipsum lorem ipsum
+            example:
+              petName: Mist
+              description: Lorem ipsum lorem ipsum
+        required: true
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+      security:
+        - bearer: []
+    delete:
+      tags:
+        - Pet
+      summary: Delete Pet
+      operationId: DeletePet
+      parameters:
+        - in: path
+          name: petId # Note the name is the same as in the path
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+          description: The pet ID
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+      security:
+        - bearer: []
+  /pets/uploadImage:
+    post:
+      tags:
+        - Pet
+      summary: Upload Image
+      operationId: UploadImage
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+      security:
+        - bearer: []
+  /favorites/add:
+    patch:
+      tags:
+        - Favorite
+      summary: Add To Favorites
+      operationId: AddToFavorites
+      parameters: []
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/AddToFavoritesRequest'
+                - example:
+                    petId: 6487b85b4b5a5c22407966b9
+            example:
+              petId: 6487b85b4b5a5c22407966b9
+        required: true
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+      security:
+        - bearer: []
+  /favorites/remove:
+    patch:
+      tags:
+        - Favorite
+      summary: Remove From Favorites
+      operationId: RemoveFromFavorites
+      parameters: []
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/RemoveFromFavoritesRequest'
+                - example:
+                    petId: 6487b85b4b5a5c22407966b9
+            example:
+              petId: 6487b85b4b5a5c22407966b9
+        required: true
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+      security:
+        - bearer: []
+  /favorites:
+    get:
+      tags:
+        - Favorite
+      summary: Get All Favorite Pets
+      operationId: GetAllFavoritePets
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+      security:
+        - bearer: []
+  /favorites/{petId}:
+    get:
+      tags:
+        - Favorite
+      summary: Get One Favorite Pet
+      operationId: GetOneFavoritePet
+      parameters:
+        - in: path
+          name: petId # Note the name is the same as in the path
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+          description: The pet ID
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+      security:
+        - bearer: []
+  /cat-breeds:
+    get:
+      tags:
+        - Search
+      summary: Cat Breeds
+      operationId: CatBreeds
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+  /dog-breeds:
+    get:
+      tags:
+        - Search
+      summary: Dog Breeds
+      operationId: DogBreeds
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+  /cat-colors:
+    get:
+      tags:
+        - Search
+      summary: Cat Colors
+      operationId: CatColors
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+  /dog-colors:
+    get:
+      tags:
+        - Search
+      summary: Dog Colors
+      operationId: DogColors
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+  /pets/12345/adopt:
+    post:
+      tags:
+        - Adoption
+      summary: Adoption
+      operationId: Adoption
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+      security:
+        - bearer: []
+  /stripe:
+    post:
+      tags:
+        - Donation
+      summary: Stripe
+      operationId: Stripe
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+components:
+  schemas:
+    RegisterUserRequest:
+      title: RegisterUserRequest
+      required:
+        - name
+        - email
+        - password
+      type: object
+      properties:
+        name:
+          type: string
+        email:
+          type: string
+        password:
+          type: string
+      example:
+        name: anna
+        email: anna@test.com
+        password: secret123
+    LoginUserRequest:
+      title: LoginUserRequest
+      required:
+        - email
+        - password
+      type: object
+      properties:
+        email:
+          type: string
+        password:
+          type: string
+      example:
+        email: peter@test.com
+        password: '12345678'
+    UpdateUserProfileRequest:
+      title: UpdateUserProfileRequest
+      required:
+        - name
+        - email
+      type: object
+      properties:
+        name:
+          type: string
+        email:
+          type: string
+      example:
+        name: peter
+        email: peter@test.com
+    ForgotPasswordRequest:
+      title: ForgotPasswordRequest
+      required:
+        - email
+      type: object
+      properties:
+        email:
+          type: string
+      example:
+        email: peter@test.com
+    CreatePetRequest:
+      title: CreatePetRequest
+      required:
+        - petName
+        - description
+      type: object
+      properties:
+        petName:
+          type: string
+        description:
+          type: string
+      example:
+        petName: Whatsapp
+        description: sfehfnhfnksdfnksdfnd
+    UpdatePetRequest:
+      title: UpdatePetRequest
+      required:
+        - petName
+        - description
+      type: object
+      properties:
+        petName:
+          type: string
+        description:
+          type: string
+      example:
+        petName: Mist
+        description: Lorem ipsum lorem ipsum
+    AddToFavoritesRequest:
+      title: AddToFavoritesRequest
+      required:
+        - petId
+      type: object
+      properties:
+        petId:
+          type: string
+      example:
+        petId: 6487b85b4b5a5c22407966b9
+    RemoveFromFavoritesRequest:
+      title: RemoveFromFavoritesRequest
+      required:
+        - petId
+      type: object
+      properties:
+        petId:
+          type: string
+      example:
+        petId: 6487b85b4b5a5c22407966b9
+  securitySchemes:
+    bearer:
+      type: http
+      scheme: bearer
+security: []
+tags:
+  - name: Auth
+  - name: User
+  - name: Password
+  - name: Pet
+  - name: Favorite
+  - name: Search
+  - name: Adoption
+  - name: Donation

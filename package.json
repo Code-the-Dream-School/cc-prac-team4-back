@@ -33,8 +33,10 @@
     "nodemailer": "^6.9.2",
     "path": "^0.12.7",
     "stripe": "^12.10.0",
+    "swagger-ui-express": "^4.6.3",
     "validator": "^13.9.0",
-    "xss-clean": "^0.1.4"
+    "xss-clean": "^0.1.4",
+    "yamljs": "^0.3.0"
   },
   "devDependencies": {
     "nodemon": "^2.0.21"
