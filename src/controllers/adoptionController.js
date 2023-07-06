@@ -23,14 +23,14 @@ const adoptionController = async (req, res, next) => {
 
   try {
     await mailer({
-      emailTo: [process.env.SHELTER_EMAIL, user.email],
+      emailTo: [process.env.SHELTER_EMAIL, req.body.email],
       subject: 'Adoption Application Form',
       data: req.body,
     });
 
     res.status(StatusCodes.OK).json({
       success: true,
-      message: `Email with Adoption Application Form for adopting ${pet.petType} named ${pet.petName} sent to ${process.env.SHELTER_EMAIL} successfully. Copy of the Adoption Application Form was sent to ${user.email}.`,
+      message: `Email with Adoption Application Form for adopting ${pet.petType} named ${pet.petName} was sent to ${process.env.SHELTER_EMAIL} successfully. Copy of the Adoption Application Form was sent to ${req.body.email}.`,
     });
   } catch (error) {
     res.status(StatusCodes.BAD_REQUEST).json({
