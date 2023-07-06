@@ -15,6 +15,11 @@ const xss = require('xss-clean');
 const rateLimiter = require('express-rate-limit');
 const mongoSanitize = require('express-mongo-sanitize');
 
+//Swagger
+const swaggerUI = require('swagger-ui-express');
+const YAML = require('yamljs');
+const swaggerDocument = YAML.load('./swagger.yaml');
+
 //app
 
 const mainRouter = require('./routes/mainRouter.js');
@@ -25,7 +30,7 @@ const favoriteRouter = require('./routes/favoriteRoutes.js');
 const searchRouter = require('./routes/searchRoutes.js');
 const additionalRouter = require('./routes/additionalRouter.js');
 const stripeRouter = require('./routes/stripeRouter.js');
-const adoptionRouter = require('./routes/adoptionRouter.js')
+const adoptionRouter = require('./routes/adoptionRouter.js');
 
 // middleware
 const notFoundMiddleware = require('./middleware/not-found');
@@ -48,6 +53,12 @@ app.use(express.static('public'));
 app.use(favicon(__dirname + '/public/favicon.ico'));
 app.use(cookieParser(process.env.JWT_SECRET));
 app.use(fileUpload());
+app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(swaggerDocument));
+app.get('/', (req, res) => {
+  res.send(
+    '<h1>Adopt The Dream API</h1><a href="api-docs">API Documentation</a>'
+  );
+});
 
 // routes middleware
 app.use('/api/v1', mainRouter);
