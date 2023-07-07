@@ -23,13 +23,13 @@ npm i && npm run dev
 - Mongoose
 - jsonwebtoken
 - bcryptjs
-- [Stripe API](https://www.petfinder.com/developers/)
+- [Stripe API](https://stripe.com/docs/api/)
 
 ## Live Demo
 
 A live demo is currently being hosted on render.com:
 
-- [BackEnd](https://stripe.com/docs/api/)
+- [BackEnd](https://pet-shelter.onrender.com/)
 
 ## Features Include:
 
